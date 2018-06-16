@@ -19,9 +19,15 @@
 } while(0)
 
 /* Addressing modes */
-#define OPERAND_IMM_8 (memory->cpu_mmap_read(pc + 1))
+#define PC_RELATIVE(offset) (memory->cpu_mmap_read(pc + (offset)))
+#define OPERAND_IMM_8 (PC_RELATIVE(1))
+#define OPERAND_IMM_16 ((PC_RELATIVE(2) << 8) | PC_RELATIVE(1))
 #define OPERAND_ZP (memory->cpu_mmap_read(OPERAND_IMM_8))
 #define OPERAND_ZP_X (memory->cpu_mmap_read((OPERAND_IMM_8 + x) & 0xFF))
+/* Little Endian!! */
+#define OPERAND_ABS (memory->cpu_mmap_read(OPERAND_IMM_16))
+#define OPERAND_ABS_X (memory->cpu_mmap_read((OPERAND_IMM_16 + x)))
+#define OPERAND_ABS_Y (memory->cpu_mmap_read((OPERAND_IMM_16 + y)))
 
 /* ADC */
 #define ADC(__valexpr) do {\
