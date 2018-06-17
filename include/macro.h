@@ -29,6 +29,17 @@
 #define OPERAND_ABS_X (memory->cpu_mmap_read((OPERAND_IMM_16 + x)))
 #define OPERAND_ABS_Y (memory->cpu_mmap_read((OPERAND_IMM_16 + y)))
 
+/* Warning : OPERAND_IND results in a 16 bit result */
+/* TODO : Optimize performance by caching intermediate values */
+#define OPERAND_IND ((memory->cpu_mmap_read(OPERAND_IMM_16 + 1) << 8)\
+			| (memory->cpu_mmap_read(OPERAND_IMM_16)))
+
+#define OPERAND_IND_X (memory->cpu_mmap_read(((memory->cpu_mmap_read((x + OPERAND_IMM_8 + 1) & 0xFF)) << 8)\
+			| (memory->cpu_mmap_read((x + OPERAND_IMM_8) & 0xFF))))
+#define OPERAND_IND_Y (memory->cpu_mmap_read(\
+			((memory->cpu_mmap_read(OPERAND_IMM_8 + 1) << 8)\
+			| (memory->cpu_mmap_read(OPERAND_IMM_8))) + y))
+
 /* ADC */
 #define ADC(__valexpr) do {\
 	uint8_t operand = __valexpr;\
