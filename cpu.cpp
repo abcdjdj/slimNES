@@ -37,6 +37,16 @@ void CPU::decode(const uint8_t &opcode)
 		case 0x61: { ADC(OPERAND_IND_X);	break; }
 		case 0x71: { ADC(OPERAND_IND_Y);	break; }
 
+		// AND
+		case 0x29: { AND(OPERAND_IMM_8);	break; }
+		case 0x25: { AND(OPERAND_ZP);		break; }
+		case 0x35: { AND(OPERAND_ZP_X);		break; }
+		case 0x2D: { AND(OPERAND_ABS);		break; }
+		case 0x3D: { AND(OPERAND_ABS_X);	break; }
+		case 0x39: { AND(OPERAND_ABS_Y);	break; }
+		case 0x21: { AND(OPERAND_IND_X);	break; }
+		case 0x31: { AND(OPERAND_IND_Y);	break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }

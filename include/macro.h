@@ -52,3 +52,13 @@
 	a = ans & 0xFF;\
 	pc += 2;\
 } while(0)
+
+/* AND */
+#define AND(__valexpr) do {\
+	uint8_t operand = __valexpr;\
+	printf("AND Operand = %d\n", operand);\
+	a &= operand;\
+	FLAG_CONDITION(a == 0, FLAG_ZERO);\
+	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+	pc += 2;\
+} while(0)
