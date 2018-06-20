@@ -20,7 +20,7 @@ void Memory::cpu_mmap_write(uint16_t addr, uint8_t data)
 	/* TODO : Implement memory access to all 64 KB */
 	printf("Writing data=%x to addr 0x%x\n", data, addr);
 	if (addr <= 0x1FFF)
-		cpu->ram[addr & 0x800] = data;
+		cpu->ram[addr % 0x800] = data;
 	else
 		return; /* TODO : Other peripherals */
 }
