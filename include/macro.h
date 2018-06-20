@@ -18,27 +18,23 @@
 	}\
 } while(0)
 
-/* Addressing modes */
-#define PC_RELATIVE(offset) (memory->cpu_mmap_read(pc + (offset)))
-#define OPERAND_IMM_8 (PC_RELATIVE(1))
-#define OPERAND_IMM_16 ((PC_RELATIVE(2) << 8) | PC_RELATIVE(1))
-#define OPERAND_ZP (memory->cpu_mmap_read(OPERAND_IMM_8))
-#define OPERAND_ZP_X (memory->cpu_mmap_read((OPERAND_IMM_8 + x) & 0xFF))
-/* Little Endian!! */
-#define OPERAND_ABS (memory->cpu_mmap_read(OPERAND_IMM_16))
-#define OPERAND_ABS_X (memory->cpu_mmap_read((OPERAND_IMM_16 + x)))
-#define OPERAND_ABS_Y (memory->cpu_mmap_read((OPERAND_IMM_16 + y)))
+#define READ8(addr) (memory->cpu_mmap_read(addr))
+#define READ16(addr) ((READ8((addr) + 1) << 8) | READ8(addr))
 
-/* Warning : OPERAND_IND results in a 16 bit result */
-/* TODO : Optimize performance by caching intermediate values */
-#define OPERAND_IND ((memory->cpu_mmap_read(OPERAND_IMM_16 + 1) << 8)\
-			| (memory->cpu_mmap_read(OPERAND_IMM_16)))
+/* Addressing modes (effective addresses) */
+#define EA_PC_RELATIVE(offset) (pc + (offset))
+#define EA_IMM (EA_PC_RELATIVE(1))
 
-#define OPERAND_IND_X (memory->cpu_mmap_read(((memory->cpu_mmap_read((x + OPERAND_IMM_8 + 1) & 0xFF)) << 8)\
-			| (memory->cpu_mmap_read((x + OPERAND_IMM_8) & 0xFF))))
-#define OPERAND_IND_Y (memory->cpu_mmap_read(\
-			((memory->cpu_mmap_read(OPERAND_IMM_8 + 1) << 8)\
-			| (memory->cpu_mmap_read(OPERAND_IMM_8))) + y))
+#define EA_ZP (READ8(EA_IMM))
+#define EA_ZP_X ((x + READ8(EA_IMM)) & 0xFF)
+
+#define EA_ABS (READ16(EA_IMM))
+#define EA_ABS_X (x + READ16(EA_IMM))
+#define EA_ABS_Y (y + READ16(EA_IMM))
+
+#define EA_IND (READ16(EA_IMM))
+#define EA_IND_X (READ16((x + READ8(EA_IMM)) & 0xFF))
+#define EA_IND_Y (READ16(READ8(EA_IMM)) + y)
 
 /* ADC */
 #define ADC(__valexpr) do {\

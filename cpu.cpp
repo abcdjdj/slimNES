@@ -28,24 +28,24 @@ void CPU::decode(const uint8_t &opcode)
 {
 	switch(opcode) {
 		// ADC
-		case 0x69: { ADC(OPERAND_IMM_8);	break; }
-		case 0x65: { ADC(OPERAND_ZP);		break; }
-		case 0x75: { ADC(OPERAND_ZP_X);		break; }
-		case 0x6D: { ADC(OPERAND_ABS);		break; }
-		case 0x7D: { ADC(OPERAND_ABS_X);	break; }
-		case 0x79: { ADC(OPERAND_ABS_Y);	break; }
-		case 0x61: { ADC(OPERAND_IND_X);	break; }
-		case 0x71: { ADC(OPERAND_IND_Y);	break; }
+		case 0x69: { ADC(READ8(EA_IMM));	break; }
+		case 0x65: { ADC(READ8(EA_ZP));		break; }
+		case 0x75: { ADC(READ8(EA_ZP_X));	break; }
+		case 0x6D: { ADC(READ8(EA_ABS));	break; }
+		case 0x7D: { ADC(READ8(EA_ABS_X));	break; }
+		case 0x79: { ADC(READ8(EA_ABS_Y));	break; }
+		case 0x61: { ADC(READ8(EA_IND_X));	break; }
+		case 0x71: { ADC(READ8(EA_IND_Y));	break; }
 
 		// AND
-		case 0x29: { AND(OPERAND_IMM_8);	break; }
-		case 0x25: { AND(OPERAND_ZP);		break; }
-		case 0x35: { AND(OPERAND_ZP_X);		break; }
-		case 0x2D: { AND(OPERAND_ABS);		break; }
-		case 0x3D: { AND(OPERAND_ABS_X);	break; }
-		case 0x39: { AND(OPERAND_ABS_Y);	break; }
-		case 0x21: { AND(OPERAND_IND_X);	break; }
-		case 0x31: { AND(OPERAND_IND_Y);	break; }
+		case 0x29: { AND(READ8(EA_IMM));	break; }
+		case 0x25: { AND(READ8(EA_ZP));		break; }
+		case 0x35: { AND(READ8(EA_ZP_X));	break; }
+		case 0x2D: { AND(READ8(EA_ABS));	break; }
+		case 0x3D: { AND(READ8(EA_ABS_X));	break; }
+		case 0x39: { AND(READ8(EA_ABS_Y));	break; }
+		case 0x21: { AND(READ8(EA_IND_X));	break; }
+		case 0x31: { AND(READ8(EA_IND_Y));	break; }
 
 		default: printf("Unknown opcode %x\n", opcode);
 	}
