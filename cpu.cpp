@@ -47,6 +47,13 @@ void CPU::decode(const uint8_t &opcode)
 		case 0x21: { AND(READ8(EA_IND_X));	break; }
 		case 0x31: { AND(READ8(EA_IND_Y));	break; }
 
+		// ASL
+		case 0x0A: { ASL_ACC();		break; }
+		case 0x06: { ASL(EA_ZP);	break; }
+		case 0x16: { ASL(EA_ZP_X);	break; }
+		case 0x0E: { ASL(EA_ABS);	break; }
+		case 0x1E: { ASL(EA_ABS_X);	break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }

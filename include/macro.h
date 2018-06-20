@@ -20,6 +20,7 @@
 
 #define READ8(addr) (memory->cpu_mmap_read(addr))
 #define READ16(addr) ((READ8((addr) + 1) << 8) | READ8(addr))
+#define WRITE8(addr, data) (memory->cpu_mmap_write(addr, data))
 
 /* Addressing modes (effective addresses) */
 #define EA_PC_RELATIVE(offset) (pc + (offset))
@@ -57,4 +58,23 @@
 	FLAG_CONDITION(a == 0, FLAG_ZERO);\
 	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
 	pc += 2;\
+} while(0)
+
+/* ASL */
+#define ASL(__ea_expr) do {\
+	uint16_t addr = __ea_expr;\
+	uint8_t operand = READ8(addr);\
+	printf("ASL Operand = %d\n", operand);\
+	FLAG_CONDITION(operand & 0x80, FLAG_CARRY);\
+	operand <<= 1;\
+	FLAG_CONDITION(operand & 0x80, FLAG_SIGN);\
+	FLAG_CONDITION(operand == 0, FLAG_ZERO);\
+	WRITE8(addr, operand);\
+} while(0)
+
+#define ASL_ACC() do {\
+	FLAG_CONDITION(a & 0x80, FLAG_CARRY);\
+	a <<= 1;\
+	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+	FLAG_CONDITION(a == 0, FLAG_ZERO);\
 } while(0)
