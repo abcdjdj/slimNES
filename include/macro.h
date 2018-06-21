@@ -87,9 +87,10 @@
 } while(0)
 
 /* Branching */
+/* TODO : Compiler specific behaviour during uint8 to int8 conversion */
 #define BRANCH(cond) do {\
 	if(cond) {\
-		pc = READ8(EA_IMM);\
+		pc += 2 + (int8_t)READ8(EA_IMM);\
 		printf("PC set to 0x%x\n", pc);\
 	}\
 } while(0)
