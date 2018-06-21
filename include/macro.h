@@ -78,3 +78,18 @@
 	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
 	FLAG_CONDITION(a == 0, FLAG_ZERO);\
 } while(0)
+
+/* BIT */
+#define BIT(__valexpr) do {\
+	uint8_t operand = __valexpr;\
+	FLAG_CONDITION((a & operand) == 0, FLAG_ZERO);\
+	flags = (flags & 0x3F) | (operand & 0xC0);\
+} while(0)
+
+/* Branching */
+#define BRANCH(cond) do {\
+	if(cond) {\
+		pc = READ8(EA_IMM);\
+		printf("PC set to 0x%x\n", pc);\
+	}\
+} while(0)

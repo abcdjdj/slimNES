@@ -54,6 +54,20 @@ void CPU::decode(const uint8_t &opcode)
 		case 0x0E: { ASL(EA_ABS);	break; }
 		case 0x1E: { ASL(EA_ABS_X);	break; }
 
+		// BIT
+		case 0x24: { BIT(READ8(EA_ZP));		break; }
+		case 0x2C: { BIT(READ16(EA_ABS));	break; }
+
+		// Branching
+		case 0x10: { BRANCH(!(flags & FLAG_SIGN));	break; }
+		case 0x30: { BRANCH(flags & FLAG_SIGN);		break; }
+		case 0x50: { BRANCH(!(flags & FLAG_OVER));	break; }
+		case 0x70: { BRANCH(flags & FLAG_OVER);		break; }
+		case 0x90: { BRANCH(!(flags & FLAG_CARRY));	break; }
+		case 0xB0: { BRANCH(flags & FLAG_CARRY);	break; }
+		case 0xD0: { BRANCH(!(flags & FLAG_ZERO));	break; }
+		case 0xF0: { BRANCH(flags & FLAG_ZERO);		break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }
