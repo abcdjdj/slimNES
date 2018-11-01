@@ -74,6 +74,17 @@ void CPU::decode(const uint8_t &opcode)
 		case 0x58: { FLAG_CLEAR(FLAG_INTR);		break; }
 		case 0xB8: { FLAG_CLEAR(FLAG_OVER);		break; }
 
+		// CMP
+		case 0xC9: { CMP(READ8(EA_IMM));		break; }
+		case 0xC5: { CMP(READ8(EA_ZP));			break; }
+		case 0xD5: { CMP(READ8(EA_ZP_X));		break; }
+		case 0xCD: { CMP(READ8(EA_ABS));		break; }
+		case 0xDD: { CMP(READ8(EA_ABS_X));		break; }
+		case 0xD9: { CMP(READ8(EA_ABS_Y));		break; }
+		case 0xC1: { CMP(READ8(EA_IND_X));		break; }
+		case 0xD1: { CMP(READ8(EA_IND_Y));		break; }
+
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }
