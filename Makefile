@@ -18,4 +18,4 @@ $(TARGET) : $(OBJS)
 
 .PHONY: clean
 clean :
-	rm -rf *.o *.out 
+	rm -rf *.o *.out
