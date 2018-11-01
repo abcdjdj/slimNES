@@ -68,6 +68,12 @@ void CPU::decode(const uint8_t &opcode)
 		case 0xD0: { BRANCH(!(flags & FLAG_ZERO));	break; }
 		case 0xF0: { BRANCH(flags & FLAG_ZERO);		break; }
 
+		// Clear flags
+		case 0x18: { FLAG_CLEAR(FLAG_CARRY);		break; }
+		case 0xD8: { FLAG_CLEAR(FLAG_DEC);		break; }
+		case 0x58: { FLAG_CLEAR(FLAG_INTR);		break; }
+		case 0xB8: { FLAG_CLEAR(FLAG_OVER);		break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }
