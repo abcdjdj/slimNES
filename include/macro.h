@@ -119,3 +119,27 @@
 	FLAG_CONDITION(register == 0, FLAG_ZERO);\
 	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
+
+/* EOR */
+#define EOR(__valexpr) do {\
+	uint8_t operand = __valexpr;\
+	a ^= operand;\
+	FLAG_CONDITION(a == 0, FLAG_ZERO);\
+	FLAG_CONDITION(a & FLAG_SIGN, FLAG_SIGN);\
+} while(0)
+
+/* INC */
+#define INC(__addressexpr) do{\
+	uint8_t address = __addressexpr;\
+	uint8_t val = READ8(address) + 1;\
+	FLAG_CONDITION(val == 0, FLAG_ZERO);\
+	FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
+	WRITE8(address, val);\
+} while(0)
+
+/* INC_REG */
+#define INC_REG(register) do{\
+	++register;\
+	FLAG_CONDITION(register == 0, FLAG_ZERO);\
+	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
+} while(0)

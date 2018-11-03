@@ -104,6 +104,26 @@ void CPU::decode(const uint8_t &opcode)
 		case 0xCA: { DEC_REG(x);	pc += 1;	break; }
 		case 0x88: { DEC_REG(y);	pc += 1;	break; }
 
+		// EOR
+		case 0x49: { EOR(READ8(EA_IMM));	pc += 2;	break; }
+		case 0x45: { EOR(READ8(EA_ZP));		pc += 2;	break; }
+		case 0x55: { EOR(READ8(EA_ZP_X));	pc += 2;	break; }
+		case 0x4D: { EOR(READ8(EA_ABS));	pc += 3;	break; }
+		case 0x5D: { EOR(READ8(EA_ABS_X));	pc += 3;	break; }
+		case 0x59: { EOR(READ8(EA_ABS_Y));	pc += 3;	break; }
+		case 0x41: { EOR(READ8(EA_IND_X));	pc += 2;	break; }
+		case 0x51: { EOR(READ8(EA_IND_Y));	pc += 2;	break; }
+
+		// INC
+		case 0xE6: { INC(EA_ZP);	pc += 2;	break; }
+		case 0xF6: { INC(EA_ZP_X);	pc += 2;	break; }
+		case 0xEE: { INC(EA_ABS);	pc += 3;	break; }
+		case 0xFE: { INC(EA_ABS_X);	pc += 3;	break; }
+
+		// INX, INY
+		case 0xE8: { INC_REG(x);	pc += 1;	break; }
+		case 0xC8: { INC_REG(y);	pc += 1;	break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }
