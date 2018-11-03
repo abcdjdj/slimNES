@@ -75,15 +75,24 @@ void CPU::decode(const uint8_t &opcode)
 		case 0xB8: { FLAG_CLEAR(FLAG_OVER);		break; }
 
 		// CMP
-		case 0xC9: { CMP(READ8(EA_IMM));		break; }
-		case 0xC5: { CMP(READ8(EA_ZP));			break; }
-		case 0xD5: { CMP(READ8(EA_ZP_X));		break; }
-		case 0xCD: { CMP(READ8(EA_ABS));		break; }
-		case 0xDD: { CMP(READ8(EA_ABS_X));		break; }
-		case 0xD9: { CMP(READ8(EA_ABS_Y));		break; }
-		case 0xC1: { CMP(READ8(EA_IND_X));		break; }
-		case 0xD1: { CMP(READ8(EA_IND_Y));		break; }
+		case 0xC9: { COMPARE(READ8(EA_IMM), a);			break; }
+		case 0xC5: { COMPARE(READ8(EA_ZP), a);			break; }
+		case 0xD5: { COMPARE(READ8(EA_ZP_X), a);		break; }
+		case 0xCD: { COMPARE(READ8(EA_ABS), a);			break; }
+		case 0xDD: { COMPARE(READ8(EA_ABS_X), a);		break; }
+		case 0xD9: { COMPARE(READ8(EA_ABS_Y), a);		break; }
+		case 0xC1: { COMPARE(READ8(EA_IND_X), a);		break; }
+		case 0xD1: { COMPARE(READ8(EA_IND_Y), a);		break; }
 
+		// CPX
+                case 0xE0: { COMPARE(READ8(EA_IMM), x);                break; }
+                case 0xE4: { COMPARE(READ8(EA_ZP), x);                 break; }
+                case 0xEC: { COMPARE(READ8(EA_ABS), x);                break; }
+
+                // CPY
+                case 0xC0: { COMPARE(READ8(EA_IMM), y);                break; }
+                case 0xC4: { COMPARE(READ8(EA_ZP), y);                 break; }
+                case 0xCC: { COMPARE(READ8(EA_ABS), y);                break; }
 
 		default: printf("Unknown opcode %x\n", opcode);
 	}

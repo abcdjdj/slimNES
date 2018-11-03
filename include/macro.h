@@ -95,11 +95,11 @@
 	}\
 } while(0)
 
-/* CMP */
-#define CMP(__valexpr) do {\
+/* Compare instructions */
+#define COMPARE(__valexpr, register) do {\
 	uint8_t operand = __valexpr;\
 	printf("CMP Operand = %d\n", operand);\
-	FLAG_CONDITION(a == operand, FLAG_ZERO);\
-	FLAG_CONDITION(a >= operand, FLAG_CARRY);\
-	FLAG_CONDITION((a - operand) & FLAG_SIGN, FLAG_SIGN);\
+	FLAG_CONDITION(register == operand, FLAG_ZERO);\
+	FLAG_CONDITION(register >= operand, FLAG_CARRY);\
+	FLAG_CONDITION((register - operand) & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
