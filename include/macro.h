@@ -103,3 +103,19 @@
 	FLAG_CONDITION(register >= operand, FLAG_CARRY);\
 	FLAG_CONDITION((register - operand) & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
+
+/* DEC */
+#define DEC(__addressexpr) do{\
+	uint8_t address = __addressexpr;\
+	uint8_t val = READ8(address) - 1;\
+	FLAG_CONDITION(val == 0, FLAG_ZERO);\
+	FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
+	WRITE8(address, val);\
+} while(0)
+
+/* DEC_REG */
+#define DEC_REG(register) do{\
+	--register;\
+	FLAG_CONDITION(register == 0, FLAG_ZERO);\
+	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
+} while(0)

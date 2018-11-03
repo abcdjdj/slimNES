@@ -94,6 +94,16 @@ void CPU::decode(const uint8_t &opcode)
                 case 0xC4: { COMPARE(READ8(EA_ZP), y);                 break; }
                 case 0xCC: { COMPARE(READ8(EA_ABS), y);                break; }
 
+		// DEC
+		case 0xC6: { DEC(EA_ZP);	pc += 2;	break; }
+		case 0xD6: { DEC(EA_ZP_X);	pc += 2;	break; }
+		case 0xCE: { DEC(EA_ABS);	pc += 3;	break; }
+		case 0xDE: { DEC(EA_ABS_X);	pc += 3;	break; }
+
+		// DEX, DEY
+		case 0xCA: { DEC_REG(x);	pc += 1;	break; }
+		case 0x88: { DEC_REG(y);	pc += 1;	break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }
