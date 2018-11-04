@@ -28,6 +28,7 @@
 
 #define EA_ZP (READ8(EA_IMM))
 #define EA_ZP_X ((x + READ8(EA_IMM)) & 0xFF)
+#define EA_ZP_Y ((y + READ8(EA_IMM)) & 0xFF)
 
 #define EA_ABS (READ16(EA_IMM))
 #define EA_ABS_X (x + READ16(EA_IMM))
@@ -145,4 +146,12 @@
 	WRITE8(sp, (pc + 2) & 0x00FF);\
 	--sp;\
 	pc = new_pc;\
+} while(0)
+
+/* Load register */
+#define LD_REG(__valexpr, register) do {\
+	uint8_t operand = __valexpr;\
+	register = operand;\
+	FLAG_CONDITION(register == 0, FLAG_ZERO);\
+	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
 } while(0)

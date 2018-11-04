@@ -129,6 +129,31 @@ void CPU::decode(const uint8_t &opcode)
 		// JSR
 		case 0x20: { JSR(READ16(EA_IMM));	break; }
 
+		// LDA
+		case 0xA9: { LD_REG(READ8(EA_IMM), a);		pc += 2;	break; }
+		case 0xA5: { LD_REG(READ8(EA_ZP), a);		pc += 2;	break; }
+		case 0xB5: { LD_REG(READ8(EA_ZP_X), a);		pc += 2;	break; }
+		case 0xAD: { LD_REG(READ8(EA_ABS), a);		pc += 3;	break; }
+		case 0xBD: { LD_REG(READ8(EA_ABS_X), a);	pc += 3;	break; }
+		case 0xB9: { LD_REG(READ8(EA_ABS_Y), a);	pc += 3;	break; }
+		case 0xA1: { LD_REG(READ8(EA_IND_X), a);	pc += 2;	break; }
+		case 0xB1: { LD_REG(READ8(EA_IND_Y), a);	pc += 2;	break; }
+
+		// LDX
+		case 0xA2: { LD_REG(READ8(EA_IMM), x);		pc += 2;	break; }
+		case 0xA6: { LD_REG(READ8(EA_ZP), x);		pc += 2;	break; }
+		case 0xB6: { LD_REG(READ8(EA_ZP_Y), x);		pc += 2;	break; }
+		case 0xAE: { LD_REG(READ8(EA_ABS), x);		pc += 3;	break; }
+		case 0xBE: { LD_REG(READ8(EA_ABS_Y), x);	pc += 3;	break; }
+
+		// LDY
+		case 0xA0: { LD_REG(READ8(EA_IMM), y);		pc += 2;	break; }
+		case 0xA4: { LD_REG(READ8(EA_ZP), y);		pc += 2;	break; }
+		case 0xB4: { LD_REG(READ8(EA_ZP_X), y);		pc += 2;	break; }
+		case 0xAC: { LD_REG(READ8(EA_ABS), y);		pc += 3;	break; }
+		case 0xBC: { LD_REG(READ8(EA_ABS_X), y);	pc += 3;	break; }
+
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }
