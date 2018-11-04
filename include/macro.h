@@ -100,7 +100,7 @@
 
 /* DEC */
 #define DEC(__addressexpr) do{\
-	uint8_t address = __addressexpr;\
+	uint16_t address = __addressexpr;\
 	uint8_t val = READ8(address) - 1;\
 	FLAG_CONDITION(val == 0, FLAG_ZERO);\
 	FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
@@ -124,7 +124,7 @@
 
 /* INC */
 #define INC(__addressexpr) do{\
-	uint8_t address = __addressexpr;\
+	uint16_t address = __addressexpr;\
 	uint8_t val = READ8(address) + 1;\
 	FLAG_CONDITION(val == 0, FLAG_ZERO);\
 	FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
