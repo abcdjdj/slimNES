@@ -155,3 +155,21 @@
 	FLAG_CONDITION(register == 0, FLAG_ZERO);\
 	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
+
+/* LSR */
+#define LSR_A() do {\
+	FLAG_CONDITION(a & 0x01, FLAG_CARRY);\
+	a >>= 1;\
+	FLAG_CONDITION(a == 0, FLAG_ZERO);\
+	FLAG_CLEAR(FLAG_SIGN);\
+} while(0)
+
+#define LSR(__addressexpr) do {\
+	uint16_t address = __addressexpr;\
+	uint8_t operand = READ8(address);\
+	FLAG_CONDITION(operand & 0x01, FLAG_CARRY);\
+	operand >>= 1;\
+	FLAG_CONDITION(operand == 0, FLAG_ZERO);\
+	FLAG_CLEAR(FLAG_SIGN);\
+	WRITE8(address, operand);\
+} while(0)

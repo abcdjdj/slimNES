@@ -153,6 +153,13 @@ void CPU::decode(const uint8_t &opcode)
 		case 0xAC: { LD_REG(READ8(EA_ABS), y);		pc += 3;	break; }
 		case 0xBC: { LD_REG(READ8(EA_ABS_X), y);	pc += 3;	break; }
 
+		// LSR
+		case 0x4A: { LSR_A();		pc += 1;	break; }
+		case 0x46: { LSR(EA_ZP);	pc += 2;	break; }
+		case 0x56: { LSR(EA_ZP_X);	pc += 2;	break; }
+		case 0x4E: { LSR(EA_ABS);	pc += 2;	break; }
+		case 0x5E: { LSR(EA_ABS_X);	pc += 2;	break; }
+
 
 		default: printf("Unknown opcode %x\n", opcode);
 	}
