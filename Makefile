@@ -6,7 +6,7 @@ TARGET = cpu
 
 CXX = g++
 LD = ld
-CXXFLAGS = -Wall -Werror -O0
+CXXFLAGS = -Wall -Werror -O2
 
 OBJS = $(SOURCES:.cpp=.o)
 
