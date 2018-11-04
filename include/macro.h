@@ -173,3 +173,37 @@
 	FLAG_CLEAR(FLAG_SIGN);\
 	WRITE8(address, operand);\
 } while(0)
+
+/* ORA */
+#define ORA(__valexpr) do {\
+	uint8_t operand = __valexpr;\
+	a |= operand;\
+	FLAG_CONDITION(a == 0, FLAG_ZERO);\
+	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+} while(0)
+
+/* PHA */
+#define PHA() do {\
+	WRITE8(sp, a);\
+	--sp;\
+} while(0)
+
+/* PHP */
+#define PHP() do {\
+	WRITE8(sp, flags);\
+	--sp;\
+} while(0)
+
+/* PLA */
+#define PLA() do {\
+	++sp;\
+	a = READ8(sp);\
+	FLAG_CONDITION(a == 0, FLAG_ZERO);\
+	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+} while(0)
+
+/* PLP */
+#define PLP() do {\
+	++sp;\
+	flags = READ8(sp);\
+} while(0)

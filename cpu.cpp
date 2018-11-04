@@ -160,6 +160,24 @@ void CPU::decode(const uint8_t &opcode)
 		case 0x4E: { LSR(EA_ABS);	pc += 2;	break; }
 		case 0x5E: { LSR(EA_ABS_X);	pc += 2;	break; }
 
+		// NOP
+		case 0xEA: { pc += 1;	break; }
+
+		// ORA
+		case 0x09: { ORA(READ8(EA_IMM));	pc += 2;	break; }
+		case 0x05: { ORA(READ8(EA_ZP));		pc += 2;	break; }
+		case 0x15: { ORA(READ8(EA_ZP_X));	pc += 2;	break; }
+		case 0x0D: { ORA(READ8(EA_ABS));	pc += 3;	break; }
+		case 0x1D: { ORA(READ8(EA_ABS_X));	pc += 3;	break; }
+		case 0x19: { ORA(READ8(EA_ABS_Y));	pc += 3;	break; }
+		case 0x01: { ORA(READ8(EA_IND_X));	pc += 2;	break; }
+		case 0x11: { ORA(READ8(EA_IND_Y));	pc += 2;	break; }
+
+		// Push/Pull Accumulator/Flags
+		case 0x48: { PHA();	pc += 1;	break; }
+		case 0x08: { PHP();	pc += 1;	break; }
+		case 0x68: { PLA();	pc += 1;	break; }
+		case 0x28: { PLP();	pc += 1;	break; }
 
 		default: printf("Unknown opcode %x\n", opcode);
 	}
