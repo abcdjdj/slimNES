@@ -2,7 +2,6 @@
 #define __CPU_H__
 
 #include <cstdint>
-#include "memory.h"
 
 class CPU {
 	private:

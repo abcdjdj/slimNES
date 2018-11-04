@@ -40,31 +40,26 @@
 /* ADC */
 #define ADC(__valexpr) do {\
 	uint8_t operand = __valexpr;\
-	printf("ADC Operand = %d\n", operand);\
 	uint16_t ans = a + operand + (flags & 0x01);\
 	FLAG_CONDITION(ans & 0x100, FLAG_CARRY);\
 	FLAG_CONDITION(((a ^ ans) & (operand ^ ans) & 0x80), FLAG_OVER);\
 	FLAG_CONDITION(ans & 0x80, FLAG_SIGN);\
 	FLAG_CONDITION(ans == 0, FLAG_ZERO);\
 	a = ans & 0xFF;\
-	pc += 2;\
 } while(0)
 
 /* AND */
 #define AND(__valexpr) do {\
 	uint8_t operand = __valexpr;\
-	printf("AND Operand = %d\n", operand);\
 	a &= operand;\
 	FLAG_CONDITION(a == 0, FLAG_ZERO);\
 	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
-	pc += 2;\
 } while(0)
 
 /* ASL */
 #define ASL(__ea_expr) do {\
 	uint16_t addr = __ea_expr;\
 	uint8_t operand = READ8(addr);\
-	printf("ASL Operand = %d\n", operand);\
 	FLAG_CONDITION(operand & 0x80, FLAG_CARRY);\
 	operand <<= 1;\
 	FLAG_CONDITION(operand & 0x80, FLAG_SIGN);\
@@ -91,14 +86,12 @@
 #define BRANCH(cond) do {\
 	if(cond) {\
 		pc += 2 + (int8_t)READ8(EA_IMM);\
-		printf("PC set to 0x%x\n", pc);\
 	}\
 } while(0)
 
 /* Compare instructions */
 #define COMPARE(__valexpr, register) do {\
 	uint8_t operand = __valexpr;\
-	printf("CMP Operand = %d\n", operand);\
 	FLAG_CONDITION(register == operand, FLAG_ZERO);\
 	FLAG_CONDITION(register >= operand, FLAG_CARRY);\
 	FLAG_CONDITION((register - operand) & FLAG_SIGN, FLAG_SIGN);\
