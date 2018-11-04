@@ -143,3 +143,13 @@
 	FLAG_CONDITION(register == 0, FLAG_ZERO);\
 	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
+
+/* JSR */
+#define JSR(__addressexpr) do {\
+	uint16_t new_pc = __addressexpr;\
+	WRITE8(sp, ((pc + 2) & 0xFF00) >> 8);\
+	--sp;\
+	WRITE8(sp, (pc + 2) & 0x00FF);\
+	--sp;\
+	pc = new_pc;\
+} while(0)

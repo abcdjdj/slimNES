@@ -124,6 +124,12 @@ void CPU::decode(const uint8_t &opcode)
 		case 0xE8: { INC_REG(x);	pc += 1;	break; }
 		case 0xC8: { INC_REG(y);	pc += 1;	break; }
 
+		// JMP
+		case 0x4C: { pc = READ16(EA_ABS);	break; }
+		case 0x6C: { pc = READ16(EA_IND);	break; }
+
+		case 0x20: { JSR(READ16(EA_IMM));	break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }

@@ -12,7 +12,7 @@ class CPU {
 		uint8_t y;
 
 		uint16_t pc;
-		uint8_t sp;
+		uint16_t sp;
 
 		uint8_t flags;
 
@@ -26,7 +26,7 @@ class CPU {
 
 		/* 2KB internal RAM */
 		uint8_t *ram;
-		
+
 		/* Methods */
 		void decode(const uint8_t &opcode);
 		void set_memory_link(Memory *mem);
