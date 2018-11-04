@@ -1,27 +1,25 @@
 #include <cstdio>
 #include <cstdlib>
 #include "cpu.h"
-#include "memory.h"
 #include "macro.h"
 
-CPU::CPU()
+uint8_t CPU::cpu_read(const uint16_t &addr)
 {
-/*	this->ram = new uint8_t[2048];
-	this->a = 5;
-	this->x = 0x60;
-	pc = 0x50;
-	ram[0x20] = 22;
-	ram[pc+1] = 0xC0; */
+	printf("Reading addr 0x%x\n", addr);
+	if (addr <= 0x1FFF)
+		return ram[addr % 0x800];
+	else
+		return 0; /* TODO : Other peripherals */
 }
 
-CPU::~CPU()
+void CPU::cpu_write(const uint16_t &addr, const uint8_t &data)
 {
-	delete this->ram;
-}
-
-void CPU::set_memory_link(Memory *mem)
-{
-	this->memory = mem;
+	/* TODO : Implement memory access to all 64 KB */
+	printf("Writing data=%x to addr 0x%x\n", data, addr);
+	if (addr <= 0x1FFF)
+		ram[addr % 0x800] = data;
+	else
+		return; /* TODO : Other peripherals */
 }
 
 void CPU::decode(const uint8_t &opcode)
@@ -128,6 +126,7 @@ void CPU::decode(const uint8_t &opcode)
 		case 0x4C: { pc = READ16(EA_ABS);	break; }
 		case 0x6C: { pc = READ16(EA_IND);	break; }
 
+		// JSR
 		case 0x20: { JSR(READ16(EA_IMM));	break; }
 
 		default: printf("Unknown opcode %x\n", opcode);

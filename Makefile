@@ -1,4 +1,4 @@
-SOURCES = cpu.cpp main.cpp memory.cpp
+SOURCES = cpu.cpp main.cpp
 INCLUDES = include/
 
 # Target

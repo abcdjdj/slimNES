@@ -18,9 +18,9 @@
 	}\
 } while(0)
 
-#define READ8(addr) (memory->cpu_mmap_read(addr))
+#define READ8(addr) (cpu_read(addr))
 #define READ16(addr) ((READ8((addr) + 1) << 8) | READ8(addr))
-#define WRITE8(addr, data) (memory->cpu_mmap_write(addr, data))
+#define WRITE8(addr, data) (cpu_write(addr, data))
 
 /* Addressing modes (effective addresses) */
 #define EA_PC_RELATIVE(offset) (pc + (offset))

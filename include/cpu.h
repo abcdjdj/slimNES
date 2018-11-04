@@ -16,20 +16,15 @@ class CPU {
 
 		uint8_t flags;
 
-		/* CPU memory interfacing */
-		Memory *memory;
-
 	public:
-		/* Constructor & Destructor */
-		CPU();
-		~CPU();
 
 		/* 2KB internal RAM */
-		uint8_t *ram;
+		uint8_t ram[2048];
 
 		/* Methods */
 		void decode(const uint8_t &opcode);
-		void set_memory_link(Memory *mem);
+		uint8_t cpu_read(const uint16_t &addr);
+		void cpu_write(const uint16_t &addr, const uint8_t &data);
 		void dump_reg();
 };
 
