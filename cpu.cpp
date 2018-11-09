@@ -179,6 +179,20 @@ void CPU::decode(const uint8_t &opcode)
 		case 0x68: { PLA();	pc += 1;	break; }
 		case 0x28: { PLP();	pc += 1;	break; }
 
+		// ROL
+		case 0x2A: { ROL_A();		pc += 1;	break; }
+		case 0x26: { ROL(EA_ZP);	pc += 2;	break; }
+		case 0x36: { ROL(EA_ZP_X);	pc += 2;	break; }
+		case 0x2E: { ROL(EA_ABS);	pc += 3;	break; }
+		case 0x3E: { ROL(EA_ABS_X);	pc += 3;	break; }
+
+		// ROR
+		case 0x6A: { ROR_A();		pc += 1;	break; }
+		case 0x66: { ROR(EA_ZP);	pc += 2;	break; }
+		case 0x76: { ROR(EA_ZP_X);	pc += 2;	break; }
+		case 0x6E: { ROR(EA_ABS);	pc += 3;	break; }
+		case 0x7E: { ROR(EA_ABS_X);	pc += 3;	break; }
+
 		default: printf("Unknown opcode %x\n", opcode);
 	}
 }

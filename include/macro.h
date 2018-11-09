@@ -207,3 +207,34 @@
 	++sp;\
 	flags = READ8(sp);\
 } while(0)
+
+/* Rotate instructions */
+#define ROL_A() do {\
+	uint8_t bit_7 = a & 0x80;\
+	a = (a << 1) | (flags & FLAG_CARRY);\
+	FLAG_CONDITION(bit_7, FLAG_CARRY);\
+} while(0)
+
+#define ROL(__addressexpr) do {\
+	uint16_t address = __addressexpr;\
+	uint8_t operand = READ8(address);\
+	uint8_t bit_7 = operand & 0x80;\
+	operand = (operand << 1) | (flags & FLAG_CARRY);\
+	FLAG_CONDITION(bit_7, FLAG_CARRY);\
+	WRITE8(address, operand);\
+} while(0)
+
+#define ROR_A() do {\
+	uint8_t bit_0 = a & 0x01;\
+	a = (a >> 1) | ((flags & FLAG_CARRY) << 7);\
+	FLAG_CONDITION(bit_0, FLAG_CARRY);\
+} while(0)
+
+#define ROR(__addressexpr) do {\
+	uint16_t address = __addressexpr;\
+	uint8_t operand = READ8(address);\
+	uint8_t bit_0 = operand & 0x01;\
+	operand = (operand >> 1) | ((flags & FLAG_CARRY) << 7);\
+	FLAG_CONDITION(bit_0, FLAG_CARRY);\
+	WRITE8(address, operand);\
+} while(0)
