@@ -11,11 +11,11 @@
 #define FLAG_SET(mask) { flags |= mask; }
 #define FLAG_CLEAR(mask) { flags &= ~mask; }
 #define FLAG_CONDITION(cond, mask) do {\
-	if (cond) {\
-		FLAG_SET(mask);\
-	} else {\
-		FLAG_CLEAR(mask);\
-	}\
+        if (cond) {\
+                FLAG_SET(mask);\
+        } else {\
+                FLAG_CLEAR(mask);\
+        }\
 } while(0)
 
 #define READ8(addr) (cpu_read(addr))
@@ -40,201 +40,201 @@
 
 /* ADC */
 #define ADC(__valexpr) do {\
-	uint8_t operand = __valexpr;\
-	uint16_t ans = a + operand + (flags & 0x01);\
-	FLAG_CONDITION(ans & 0x100, FLAG_CARRY);\
-	FLAG_CONDITION(((a ^ ans) & (operand ^ ans) & 0x80), FLAG_OVER);\
-	FLAG_CONDITION(ans & 0x80, FLAG_SIGN);\
-	FLAG_CONDITION(ans == 0, FLAG_ZERO);\
-	a = ans & 0xFF;\
+        uint8_t operand = __valexpr;\
+        uint16_t ans = a + operand + (flags & 0x01);\
+        FLAG_CONDITION(ans & 0x100, FLAG_CARRY);\
+        FLAG_CONDITION(((a ^ ans) & (operand ^ ans) & 0x80), FLAG_OVER);\
+        FLAG_CONDITION(ans & 0x80, FLAG_SIGN);\
+        FLAG_CONDITION(ans == 0, FLAG_ZERO);\
+        a = ans & 0xFF;\
 } while(0)
 
 /* AND */
 #define AND(__valexpr) do {\
-	uint8_t operand = __valexpr;\
-	a &= operand;\
-	FLAG_CONDITION(a == 0, FLAG_ZERO);\
-	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+        uint8_t operand = __valexpr;\
+        a &= operand;\
+        FLAG_CONDITION(a == 0, FLAG_ZERO);\
+        FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
 } while(0)
 
 /* ASL */
 #define ASL(__ea_expr) do {\
-	uint16_t addr = __ea_expr;\
-	uint8_t operand = READ8(addr);\
-	FLAG_CONDITION(operand & 0x80, FLAG_CARRY);\
-	operand <<= 1;\
-	FLAG_CONDITION(operand & 0x80, FLAG_SIGN);\
-	FLAG_CONDITION(operand == 0, FLAG_ZERO);\
-	WRITE8(addr, operand);\
+        uint16_t addr = __ea_expr;\
+        uint8_t operand = READ8(addr);\
+        FLAG_CONDITION(operand & 0x80, FLAG_CARRY);\
+        operand <<= 1;\
+        FLAG_CONDITION(operand & 0x80, FLAG_SIGN);\
+        FLAG_CONDITION(operand == 0, FLAG_ZERO);\
+        WRITE8(addr, operand);\
 } while(0)
 
 #define ASL_ACC() do {\
-	FLAG_CONDITION(a & 0x80, FLAG_CARRY);\
-	a <<= 1;\
-	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
-	FLAG_CONDITION(a == 0, FLAG_ZERO);\
+        FLAG_CONDITION(a & 0x80, FLAG_CARRY);\
+        a <<= 1;\
+        FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+        FLAG_CONDITION(a == 0, FLAG_ZERO);\
 } while(0)
 
 /* BIT */
 #define BIT(__valexpr) do {\
-	uint8_t operand = __valexpr;\
-	FLAG_CONDITION((a & operand) == 0, FLAG_ZERO);\
-	flags = (flags & 0x3F) | (operand & 0xC0);\
+        uint8_t operand = __valexpr;\
+        FLAG_CONDITION((a & operand) == 0, FLAG_ZERO);\
+        flags = (flags & 0x3F) | (operand & 0xC0);\
 } while(0)
 
 /* Branching */
 /* TODO : Compiler specific behaviour during uint8 to int8 conversion */
 #define BRANCH(cond) do {\
-	if(cond) {\
-		pc += 2 + (int8_t)READ8(EA_IMM);\
-	}\
+        if(cond) {\
+                pc += 2 + (int8_t)READ8(EA_IMM);\
+        }\
 } while(0)
 
 /* Compare instructions */
 #define COMPARE(__valexpr, register) do {\
-	uint8_t operand = __valexpr;\
-	FLAG_CONDITION(register == operand, FLAG_ZERO);\
-	FLAG_CONDITION(register >= operand, FLAG_CARRY);\
-	FLAG_CONDITION((register - operand) & FLAG_SIGN, FLAG_SIGN);\
+        uint8_t operand = __valexpr;\
+        FLAG_CONDITION(register == operand, FLAG_ZERO);\
+        FLAG_CONDITION(register >= operand, FLAG_CARRY);\
+        FLAG_CONDITION((register - operand) & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
 
 /* DEC */
 #define DEC(__addressexpr) do{\
-	uint16_t address = __addressexpr;\
-	uint8_t val = READ8(address) - 1;\
-	FLAG_CONDITION(val == 0, FLAG_ZERO);\
-	FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
-	WRITE8(address, val);\
+        uint16_t address = __addressexpr;\
+        uint8_t val = READ8(address) - 1;\
+        FLAG_CONDITION(val == 0, FLAG_ZERO);\
+        FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
+        WRITE8(address, val);\
 } while(0)
 
 /* DEC_REG */
 #define DEC_REG(register) do{\
-	--register;\
-	FLAG_CONDITION(register == 0, FLAG_ZERO);\
-	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
+        --register;\
+        FLAG_CONDITION(register == 0, FLAG_ZERO);\
+        FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
 
 /* EOR */
 #define EOR(__valexpr) do {\
-	uint8_t operand = __valexpr;\
-	a ^= operand;\
-	FLAG_CONDITION(a == 0, FLAG_ZERO);\
-	FLAG_CONDITION(a & FLAG_SIGN, FLAG_SIGN);\
+        uint8_t operand = __valexpr;\
+        a ^= operand;\
+        FLAG_CONDITION(a == 0, FLAG_ZERO);\
+        FLAG_CONDITION(a & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
 
 /* INC */
 #define INC(__addressexpr) do{\
-	uint16_t address = __addressexpr;\
-	uint8_t val = READ8(address) + 1;\
-	FLAG_CONDITION(val == 0, FLAG_ZERO);\
-	FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
-	WRITE8(address, val);\
+        uint16_t address = __addressexpr;\
+        uint8_t val = READ8(address) + 1;\
+        FLAG_CONDITION(val == 0, FLAG_ZERO);\
+        FLAG_CONDITION(val & FLAG_SIGN, FLAG_SIGN);\
+        WRITE8(address, val);\
 } while(0)
 
 /* INC_REG */
 #define INC_REG(register) do{\
-	++register;\
-	FLAG_CONDITION(register == 0, FLAG_ZERO);\
-	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
+        ++register;\
+        FLAG_CONDITION(register == 0, FLAG_ZERO);\
+        FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
 
 /* JSR */
 #define JSR(__addressexpr) do {\
-	uint16_t new_pc = __addressexpr;\
-	WRITE8(sp, ((pc + 2) & 0xFF00) >> 8);\
-	--sp;\
-	WRITE8(sp, (pc + 2) & 0x00FF);\
-	--sp;\
-	pc = new_pc;\
+        uint16_t new_pc = __addressexpr;\
+        WRITE8(sp, ((pc + 2) & 0xFF00) >> 8);\
+        --sp;\
+        WRITE8(sp, (pc + 2) & 0x00FF);\
+        --sp;\
+        pc = new_pc;\
 } while(0)
 
 /* Load register */
 #define LD_REG(__valexpr, register) do {\
-	uint8_t operand = __valexpr;\
-	register = operand;\
-	FLAG_CONDITION(register == 0, FLAG_ZERO);\
-	FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
+        uint8_t operand = __valexpr;\
+        register = operand;\
+        FLAG_CONDITION(register == 0, FLAG_ZERO);\
+        FLAG_CONDITION(register & FLAG_SIGN, FLAG_SIGN);\
 } while(0)
 
 /* LSR */
 #define LSR_A() do {\
-	FLAG_CONDITION(a & 0x01, FLAG_CARRY);\
-	a >>= 1;\
-	FLAG_CONDITION(a == 0, FLAG_ZERO);\
-	FLAG_CLEAR(FLAG_SIGN);\
+        FLAG_CONDITION(a & 0x01, FLAG_CARRY);\
+        a >>= 1;\
+        FLAG_CONDITION(a == 0, FLAG_ZERO);\
+        FLAG_CLEAR(FLAG_SIGN);\
 } while(0)
 
 #define LSR(__addressexpr) do {\
-	uint16_t address = __addressexpr;\
-	uint8_t operand = READ8(address);\
-	FLAG_CONDITION(operand & 0x01, FLAG_CARRY);\
-	operand >>= 1;\
-	FLAG_CONDITION(operand == 0, FLAG_ZERO);\
-	FLAG_CLEAR(FLAG_SIGN);\
-	WRITE8(address, operand);\
+        uint16_t address = __addressexpr;\
+        uint8_t operand = READ8(address);\
+        FLAG_CONDITION(operand & 0x01, FLAG_CARRY);\
+        operand >>= 1;\
+        FLAG_CONDITION(operand == 0, FLAG_ZERO);\
+        FLAG_CLEAR(FLAG_SIGN);\
+        WRITE8(address, operand);\
 } while(0)
 
 /* ORA */
 #define ORA(__valexpr) do {\
-	uint8_t operand = __valexpr;\
-	a |= operand;\
-	FLAG_CONDITION(a == 0, FLAG_ZERO);\
-	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+        uint8_t operand = __valexpr;\
+        a |= operand;\
+        FLAG_CONDITION(a == 0, FLAG_ZERO);\
+        FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
 } while(0)
 
 /* PHA */
 #define PHA() do {\
-	WRITE8(sp, a);\
-	--sp;\
+        WRITE8(sp, a);\
+        --sp;\
 } while(0)
 
 /* PHP */
 #define PHP() do {\
-	WRITE8(sp, flags);\
-	--sp;\
+        WRITE8(sp, flags);\
+        --sp;\
 } while(0)
 
 /* PLA */
 #define PLA() do {\
-	++sp;\
-	a = READ8(sp);\
-	FLAG_CONDITION(a == 0, FLAG_ZERO);\
-	FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
+        ++sp;\
+        a = READ8(sp);\
+        FLAG_CONDITION(a == 0, FLAG_ZERO);\
+        FLAG_CONDITION(a & 0x80, FLAG_SIGN);\
 } while(0)
 
 /* PLP */
 #define PLP() do {\
-	++sp;\
-	flags = READ8(sp);\
+        ++sp;\
+        flags = READ8(sp);\
 } while(0)
 
 /* Rotate instructions */
 #define ROL_A() do {\
-	uint8_t bit_7 = a & 0x80;\
-	a = (a << 1) | (flags & FLAG_CARRY);\
-	FLAG_CONDITION(bit_7, FLAG_CARRY);\
+        uint8_t bit_7 = a & 0x80;\
+        a = (a << 1) | (flags & FLAG_CARRY);\
+        FLAG_CONDITION(bit_7, FLAG_CARRY);\
 } while(0)
 
 #define ROL(__addressexpr) do {\
-	uint16_t address = __addressexpr;\
-	uint8_t operand = READ8(address);\
-	uint8_t bit_7 = operand & 0x80;\
-	operand = (operand << 1) | (flags & FLAG_CARRY);\
-	FLAG_CONDITION(bit_7, FLAG_CARRY);\
-	WRITE8(address, operand);\
+        uint16_t address = __addressexpr;\
+        uint8_t operand = READ8(address);\
+        uint8_t bit_7 = operand & 0x80;\
+        operand = (operand << 1) | (flags & FLAG_CARRY);\
+        FLAG_CONDITION(bit_7, FLAG_CARRY);\
+        WRITE8(address, operand);\
 } while(0)
 
 #define ROR_A() do {\
-	uint8_t bit_0 = a & 0x01;\
-	a = (a >> 1) | ((flags & FLAG_CARRY) << 7);\
-	FLAG_CONDITION(bit_0, FLAG_CARRY);\
+        uint8_t bit_0 = a & 0x01;\
+        a = (a >> 1) | ((flags & FLAG_CARRY) << 7);\
+        FLAG_CONDITION(bit_0, FLAG_CARRY);\
 } while(0)
 
 #define ROR(__addressexpr) do {\
-	uint16_t address = __addressexpr;\
-	uint8_t operand = READ8(address);\
-	uint8_t bit_0 = operand & 0x01;\
-	operand = (operand >> 1) | ((flags & FLAG_CARRY) << 7);\
-	FLAG_CONDITION(bit_0, FLAG_CARRY);\
-	WRITE8(address, operand);\
+        uint16_t address = __addressexpr;\
+        uint8_t operand = READ8(address);\
+        uint8_t bit_0 = operand & 0x01;\
+        operand = (operand >> 1) | ((flags & FLAG_CARRY) << 7);\
+        FLAG_CONDITION(bit_0, FLAG_CARRY);\
+        WRITE8(address, operand);\
 } while(0)
