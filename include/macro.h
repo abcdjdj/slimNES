@@ -238,3 +238,29 @@
         FLAG_CONDITION(bit_0, FLAG_CARRY);\
         WRITE8(address, operand);\
 } while(0)
+
+#define RTI() do {\
+        ++sp;\
+        flags = READ8(sp);\
+        ++sp;\
+        pc = READ16(sp);\
+        ++sp;\
+} while(0)
+
+#define RTS() do {\
+        ++sp;\
+        pc = READ16(sp) + 1;\
+        ++sp;\
+} while(0)
+
+/* SBC */
+// TODO : Test this thoroughly
+#define SBC(__valexpr) do {\
+        uint8_t operand = __valexpr;\
+        uint16_t ans = a - operand - !(flags & 0x01);\
+        FLAG_CONDITION(ans & 0x100, FLAG_CARRY);\
+        FLAG_CONDITION(((a ^ ans) & (operand ^ ans) & 0x80), FLAG_OVER);\
+        FLAG_CONDITION(ans & 0x80, FLAG_SIGN);\
+        FLAG_CONDITION(ans == 0, FLAG_ZERO);\
+        a = ans & 0xFF;\
+} while(0)

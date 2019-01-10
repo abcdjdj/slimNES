@@ -193,6 +193,21 @@ void CPU::decode(const uint8_t &opcode)
                 case 0x6E: { ROR(EA_ABS);       pc += 3;        break; }
                 case 0x7E: { ROR(EA_ABS_X);     pc += 3;        break; }
 
+                // RTI
+                case 0x40: { RTI();        break; }
+
+                // RTS
+                case 0x60: { RTS();        break; }
+
+                // SBC
+                case 0xE9: { SBC(READ8(EA_IMM));        pc += 2;        break; }
+                case 0xE5: { SBC(READ8(EA_ZP));         pc += 2;        break; }
+                case 0xF5: { SBC(READ8(EA_ZP_X));       pc += 2;        break; }
+                case 0xED: { SBC(READ8(EA_ABS));        pc += 3;        break; }
+                case 0xFD: { SBC(READ8(EA_ABS_X));      pc += 3;        break; }
+                case 0xF9: { SBC(READ8(EA_ABS_Y));      pc += 3;        break; }
+                case 0xE1: { SBC(READ8(EA_IND_X));      pc += 2;        break; }
+                case 0xF1: { SBC(READ8(EA_IND_Y));      pc += 2;        break; }
 
                 default: printf("Unknown opcode %x\n", opcode);
         }
